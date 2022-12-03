@@ -4,27 +4,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity" >
+    tools:context=".UploadActivity">
 
     <Button
-        android:id="@+id/uploadbtn"
+        android:id="@+id/capturebtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
+        android:text="Capture"
+        tools:layout_editor_absoluteX="153dp"
+        tools:layout_editor_absoluteY="261dp"
+        android:onClick="capturebtnPressed" />
+
+    <Button
+        android:id="@+id/uploadtoserverbtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="Upload"
         tools:layout_editor_absoluteX="159dp"
-        tools:layout_editor_absoluteY="260dp"
-        android:onClick="uploadbtnPress" />
-
-    <Button
-        android:id="@+id/watchbtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="Watch Videos"
-        tools:layout_editor_absoluteX="133dp"
-        tools:layout_editor_absoluteY="375dp"
-        android:onClick="watchbtnPress"
+        tools:layout_editor_absoluteY="365dp"
 
 
         app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintLeft_toLeftOf="parent"
