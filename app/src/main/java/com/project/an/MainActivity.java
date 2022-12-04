@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void watchbtnPress(View view) {
         Intent intent = new Intent(this, WatchVideosActivity.class);
+//        Intent intent = new Intent(this, CardListActivity.class);
         startActivity(intent);
     }
 }
