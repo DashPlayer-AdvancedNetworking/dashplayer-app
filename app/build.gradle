@@ -16,7 +16,13 @@ android {
     }
 
     buildTypes {
+        debug {
+            buildConfigField("String", "FILE_SYSTEM_URL", "\"http://10.10.19.96:8080/\"")
+            buildConfigField("String", "SERVER_URL", "\"http://10.10.19.96:4000/\"")
+        }
         release {
+            buildConfigField("String", "FILE_SYSTEM_URL", "\"http://10.10.19.96:8080/\"")
+            buildConfigField("String", "SERVER_URL", "\"http://10.10.19.96:4000/\"")
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }

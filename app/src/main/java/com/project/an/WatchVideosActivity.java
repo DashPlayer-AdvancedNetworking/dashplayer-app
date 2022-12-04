@@ -9,6 +9,11 @@ import android.view.View;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class WatchVideosActivity extends AppCompatActivity {
 
@@ -29,8 +34,8 @@ public class WatchVideosActivity extends AppCompatActivity {
 
         cardArrayAdapter = new CardArrayAdapter(getApplicationContext(), R.layout.list_item_card, this);
 
-        for (int i = 0; i < 10; i++) {
-            Card card = new Card("Tile", "Description", "URl");
+        for (int i = 0; i < videoCards.size(); i++) {
+            Card card = new Card(videoCards.get(i).getTitle(), videoCards.get(i).getDescription(), videoCards.get(i).getUrl());
             cardArrayAdapter.add(card);
         }
         listView.setAdapter(cardArrayAdapter);
@@ -39,31 +44,37 @@ public class WatchVideosActivity extends AppCompatActivity {
     }
 
     public static void setupCardModels(){
-        String[] titles = {"Video 5", "Video 6", "Video 7", "Video 8", "Video 9", "Video 10", "Video 15", "Video 16"};
-        String[] descriptions = {
-                "This is a description for video 5",
-                "This is a description for video 6",
-                "This is a description for video 7",
-                "This is a description for video 8",
-                "This is a description for video 9",
-                "This is a description for video 10",
-                "This is a description for video 15",
-                "This is a description for video 16"
-        };
 
-        String[] associatedUrls = {
-                "https://bitmovin-a.akamaihd.net/content/MI201109210084_1/mpds/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.mpd",
-                "http://ftp.itec.aau.at/datasets/DASHDataset2014/BigBuckBunny/2sec/BigBuckBunny_2s_onDemand_2014_05_09.mpd",
-                "http://media.developer.dolby.com/DolbyVision_Atmos/profile8.1_DASH/p8.1.mpd",
-                "https://bitmovin-a.akamaihd.net/content/MI201109210084_1/mpds/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.mpd",
-                "http://ftp.itec.aau.at/datasets/DASHDataset2014/BigBuckBunny/2sec/BigBuckBunny_2s_onDemand_2014_05_09.mpd",
-                "http://media.developer.dolby.com/DolbyVision_Atmos/profile8.1_DASH/p8.1.mpd",
-                "https://bitmovin-a.akamaihd.net/content/MI201109210084_1/mpds/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.mpd",
-                "http://ftp.itec.aau.at/datasets/DASHDataset2014/BigBuckBunny/2sec/BigBuckBunny_2s_onDemand_2014_05_09.mpd"
-        };
-        for(int i = 0; i < titles.length; i++){
-            videoCards.add(new Card(titles[i], descriptions[i], associatedUrls[i]));
-        }
+        String Tag = "vhagar";
+        Log.i(Tag, "Starting");
+        Call<List<Video>> call = RetrofitClient.getInstance().getAPI().getVideos();
+        Log.i(Tag, "call ");
+        call.enqueue(new Callback<List<Video>>() {
+            @Override
+            public void onResponse(Call<List<Video>> call, Response<List<Video>> response) {
+                Log.i(Tag, "Got data");
+                List<Video> videoList = response.body();
+                Log.i(Tag, videoList.get(0).getTitle());
+                Log.i(Tag, videoList.get(0).getDescription());
+                for (int i = 0; i < videoList.size(); i++) {
+                    Log.i(Tag, "xxxx");
+                    videoCards.add(new Card(videoList.get(i).getTitle(), videoList.get(i).getDescription(),
+                                    BuildConfig.FILE_SYSTEM_URL+videoList.get(i).getID()+"/"+videoList.get(i).getID()+"_out.mpd")
+                            );
+                }
+                Log.i(Tag, videoCards.toString());
+            }
+
+            @Override
+            public void onFailure(Call<List<Video>> call, Throwable t) {
+
+                Log.e(Tag, "Mission Faileddddd");
+                Log.e(Tag, t.getMessage());
+
+            }
+
+        });
+
     }
 
 
