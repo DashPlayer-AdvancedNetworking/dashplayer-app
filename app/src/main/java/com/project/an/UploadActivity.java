@@ -18,7 +18,6 @@ import android.widget.Button;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
-import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -40,7 +39,6 @@ import retrofit2.Response;
 
 public class UploadActivity extends AppCompatActivity {
 
-    private ExoPlayer player;
     private Button btnUpload;
     private Button btnCancel;
     private MaterialAutoCompleteTextView formVideoTitle;
@@ -57,10 +55,6 @@ public class UploadActivity extends AppCompatActivity {
         btnUpload = findViewById(R.id.btnUploadVideo);
         btnCancel = findViewById(R.id.btnCancelVideo);
 
-        //save in android/media/com.project.<app name>
-        mediaFolder = createFolder(this);
-        Log.i("FOLDER", mediaFolder);
-
         //redirect to main page if cancel button is pressed
         btnCancel.setOnClickListener(
                 view -> {
@@ -69,6 +63,10 @@ public class UploadActivity extends AppCompatActivity {
                     finish();
                 }
         );
+
+        //save in android/media/com.project.<app name>
+        mediaFolder = createFolder(this);
+        Log.i("FOLDER", mediaFolder);
 
         //get title and description for captured video
         formVideoTitle = findViewById(R.id.formVideoTitle);
@@ -82,12 +80,10 @@ public class UploadActivity extends AppCompatActivity {
         //send to server if upload button is pressed. then redirect to main page
         btnUpload.setOnClickListener(
                 view -> {
-
                     verifyStoragePermissions(this);
-                    Log.i("ASDASDASD", "Headers are written 1");
+                    Log.i("STORAGE_PERMISSION", "Got permission to store");
                     UploadVideoFile uploadVideoFile = new UploadVideoFile();
                     uploadVideoFile.execute();
-
                     storeMedia(Uri.parse(videoUri));
 
                     Intent intent = new Intent(this, MainActivity.class);

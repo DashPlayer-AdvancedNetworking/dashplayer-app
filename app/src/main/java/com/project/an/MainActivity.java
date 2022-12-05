@@ -25,9 +25,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //get camera permission
-        if(isCameraAvailable()) {
+        if(getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)) {
             Log.i("VIDEO_RECORD_TAG", "Camera is available");
-            getCameraPermission();
+            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED) {
+                ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.CAMERA}, CAMERA_REQUEST_CODE);
+            }
         }else {
             Log.i("VIDEO_RECORD_TAG", "Camera is not available");
         }
@@ -36,31 +38,15 @@ public class MainActivity extends AppCompatActivity {
 
     //if upload and capture button pressed, start video capture
     public void uploadbtnPress(View view) {
-        Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
-        startActivityForResult(intent, VIDEO_RECORD_CODE);
+        Intent captureIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+        startActivityForResult(captureIntent, VIDEO_RECORD_CODE);
 
     }
 
     //if watch videos button pressed, load playlist
     public void watchbtnPress(View view) {
-        Intent intent = new Intent(this, WatchVideosActivity.class);
-        startActivity(intent);
-    }
-
-    //get camera permission
-    private void getCameraPermission() {
-        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED) {
-            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.CAMERA}, CAMERA_REQUEST_CODE);
-        }
-    }
-
-    //check availability of a camera
-    private boolean isCameraAvailable() {
-        if (getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)) {
-            return true;
-        } else {
-            return false;
-        }
+        Intent watchVidsIntent = new Intent(this, WatchVideosActivity.class);
+        startActivity(watchVidsIntent);
     }
 
     //redirect to video uploadig form after successfully captured a video.
@@ -73,25 +59,16 @@ public class MainActivity extends AppCompatActivity {
                 //upload part
                 assert data != null;
                 videoUri = data.getData();
-
                 Log.i("MY_VIDEO_URI", videoUri.toString());
-
-                Intent intent = new Intent(this, UploadActivity.class);
-
-                intent.putExtra("VIDEO_URL", videoUri.toString());
-
-                startActivity(intent);
-
+                Intent uploadVideosIntent = new Intent(this, UploadActivity.class);
+                uploadVideosIntent.putExtra("VIDEO_URL", videoUri.toString());
+                startActivity(uploadVideosIntent);
                 finish();
-
                 Log.i("RESULT_OK", "onActivityResult: Video captured");
-
-
-
             } else if (resultCode == RESULT_CANCELED) {
-                Log.i("VIDEO_RECORD_TAG", "Video recording cancelled");
+                Log.i("VIDEO_RECORD_TAG", "Recording cancelled");
             } else {
-                Log.i("VIDEO_RECORD_TAG", "Failed to record video");
+                Log.i("VIDEO_RECORD_TAG", "Recording Failed");
             }
         }
     }
