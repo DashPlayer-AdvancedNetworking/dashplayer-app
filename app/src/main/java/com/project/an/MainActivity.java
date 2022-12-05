@@ -44,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
     //if watch videos button pressed, load playlist
     public void watchbtnPress(View view) {
         Intent intent = new Intent(this, WatchVideosActivity.class);
-//        Intent intent = new Intent(this, CardListActivity.class);
         startActivity(intent);
     }
 

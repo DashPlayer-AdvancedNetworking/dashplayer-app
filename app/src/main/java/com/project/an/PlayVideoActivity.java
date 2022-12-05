@@ -10,8 +10,6 @@ import android.widget.VideoView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.net.URI;
-
 public class PlayVideoActivity extends AppCompatActivity {
 
     private VideoView videoView;
@@ -29,6 +27,7 @@ public class PlayVideoActivity extends AppCompatActivity {
         videoView.setMediaController(mediaController);
 
         Intent intent = getIntent();
+        // Set video url  for video view
         if(intent != null && intent.hasExtra("VIDEO_URI")) {
             videoUri = Uri.parse(intent.getStringExtra("VIDEO_URI"));
             Log.i("VIDEO_VIEW_TAG", "Video URI: " + videoUri);

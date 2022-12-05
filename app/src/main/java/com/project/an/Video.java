@@ -1,6 +1,7 @@
 package com.project.an;
 import com.google.gson.annotations.SerializedName;
 
+// Video model for HTTP requests
 public class Video {
 
     @SerializedName("title")

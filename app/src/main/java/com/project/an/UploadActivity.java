@@ -209,7 +209,6 @@ public class UploadActivity extends AppCompatActivity {
             Log.i("MY_VIDEO_PATH", videoUri);
 
             File video_source = new File(videoUri);
-            String Tag = "fSnd";
 
             Map<String, RequestBody> map = new HashMap<>();
             map.put("title", RequestBody.create(MediaType.parse("text/plain"), formVideoTitle.getText().toString()));
@@ -219,39 +218,28 @@ public class UploadActivity extends AppCompatActivity {
 
             try {
                 RequestBody reqBody = RequestBody.create(MediaType.parse("multipart/form-file"), video_source);
-                Log.i(Tag, "Request body created");
                 MultipartBody.Part partImage = MultipartBody.Part.createFormData("video", video_source.getName(), reqBody);
-//                MultipartBody.Part partTitle = MultipartBody.Part.createFormData("title", formVideoTitle.getText().toString(), reqBody);
-//                MultipartBody.Part partDesc = MultipartBody.Part.createFormData("description", formVideoDescription.getText().toString(), reqBody);
-                Log.i(Tag, "Multipart created");
                 API api = RetrofitClient.getInstance().getAPI();
-                Log.i(Tag, "API created");
-                Call<ResponseBody> upload = api.uploadVideo(partImage, map);
-                Log.i(Tag, "upload response body created");
+                Call<ResponseBody> upload = api.uploadVideo(partImage, map);;
                 upload.enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                         if (response.isSuccessful()) {
-                            Log.i(Tag, "Mission successful");
-
                             Toast.makeText(getApplicationContext(), "Upload Complete", Toast.LENGTH_LONG).show();
-
                         } else {
-                            Log.e(Tag, "Response unsuccessful at line 167");
-                            Log.e(Tag, response.message());
+                            Log.e("error", response.message());
                         }
                     }
 
                     @Override
                     public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
-                        Log.e(Tag, "Mission failed");
-                        Log.e(Tag, t.getMessage());
+                        Log.e("error", t.getMessage());
                         Toast.makeText(getApplicationContext(), "Upload Failed", Toast.LENGTH_LONG).show();
                     }
                 });
 
             } catch (Exception e) {
-                Log.e(Tag, "URL error: " + e.getMessage(), e);
+                Log.e("error", "URL error: " + e.getMessage(), e);
             }
 
             return null;

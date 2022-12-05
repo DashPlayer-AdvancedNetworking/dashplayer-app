@@ -17,12 +17,12 @@ android {
 
     buildTypes {
         debug {
-            buildConfigField("String", "FILE_SYSTEM_URL", "\"http://192.168.43.149:8080/\"")
-            buildConfigField("String", "SERVER_URL", "\"http://192.168.43.149:4000/\"")
+            buildConfigField("String", "FILE_SYSTEM_URL", "\"http://192.168.30.161:8080/\"")
+            buildConfigField("String", "SERVER_URL", "\"http://192.168.30.161:4000/\"")
         }
         release {
-            buildConfigField("String", "FILE_SYSTEM_URL", "\"http://192.168.43.149:8080/\"")
-            buildConfigField("String", "SERVER_URL", "\"http://192.168.43.149:4000/\"")
+            buildConfigField("String", "FILE_SYSTEM_URL", "\"http://192.168.30.161:8080/\"")
+            buildConfigField("String", "SERVER_URL", "\"http://192.168.30.161:4000/\"")
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }

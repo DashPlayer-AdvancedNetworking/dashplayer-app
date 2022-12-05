@@ -45,19 +45,13 @@ public class WatchVideosActivity extends AppCompatActivity {
 
     public static void setupCardModels(){
 
-        String Tag = "vhagar";
-        Log.i(Tag, "Starting");
+        String Tag = "error";
         Call<List<Video>> call = RetrofitClient.getInstance().getAPI().getVideos();
-        Log.i(Tag, "call ");
         call.enqueue(new Callback<List<Video>>() {
             @Override
             public void onResponse(Call<List<Video>> call, Response<List<Video>> response) {
-                Log.i(Tag, "Got data");
                 List<Video> videoList = response.body();
-                Log.i(Tag, videoList.get(0).getTitle());
-                Log.i(Tag, videoList.get(0).getDescription());
                 for (int i = 0; i < videoList.size(); i++) {
-                    Log.i(Tag, "xxxx");
                     videoCards.add(new Card(videoList.get(i).getTitle(), videoList.get(i).getDescription(),
                                     BuildConfig.FILE_SYSTEM_URL+videoList.get(i).getID()+"/"+videoList.get(i).getID()+"_out.mpd")
                             );
@@ -67,10 +61,7 @@ public class WatchVideosActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<List<Video>> call, Throwable t) {
-
-                Log.e(Tag, "Mission Faileddddd");
                 Log.e(Tag, t.getMessage());
-
             }
 
         });
@@ -79,20 +70,13 @@ public class WatchVideosActivity extends AppCompatActivity {
 
 
     public void onCardClick(int position) {
-
-        Log.i("aemond", "Clicked in watch vide activity");
         try {
             Intent intent = new Intent(this, PlayerActivity.class);
-            Log.i("aemond", "Intent created");
-
             intent.putExtra("VIDEO_URL", videoCards.get(position).getUrl());
-            Log.i("aemond", "Url put to intent");
             intent.putExtra("VIDEO_TITLE", videoCards.get(position).getTitle());
-            Log.i("aemond", "Title put to intent");
             startActivity(intent);
-            Log.i("aemond", "play Activity started");
         }catch(Exception e){
-            Log.e("aemond", e.getMessage());
+            Log.e("error", e.getMessage());
         }
     }
 

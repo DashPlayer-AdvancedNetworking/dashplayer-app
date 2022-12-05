@@ -3,6 +3,7 @@ package com.project.an;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+// Retrofit client for handle HTTP requests
 public class RetrofitClient {
     private  static final String BASE_URL = BuildConfig.SERVER_URL ;
     private static RetrofitClient mInstance;
