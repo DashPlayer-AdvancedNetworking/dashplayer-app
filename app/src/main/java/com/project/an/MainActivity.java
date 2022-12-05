@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //chek for a camera
+        //get camera permission
         if(isCameraAvailable()) {
             Log.i("VIDEO_RECORD_TAG", "Camera is available");
             getCameraPermission();
@@ -34,21 +34,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
+    //if upload and capture button pressed, start video capture
     public void uploadbtnPress(View view) {
         Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
         startActivityForResult(intent, VIDEO_RECORD_CODE);
 
     }
 
+    //if watch videos button pressed, load playlist
     public void watchbtnPress(View view) {
         Intent intent = new Intent(this, WatchVideosActivity.class);
 //        Intent intent = new Intent(this, CardListActivity.class);
         startActivity(intent);
     }
 
-
-    //==================================================================
     //get camera permission
     private void getCameraPermission() {
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED) {
@@ -65,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //redirect to video uploadig form after successfully captured a video.
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

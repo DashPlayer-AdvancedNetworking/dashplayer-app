@@ -47,9 +47,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:letterSpacing="0.5"
         android:padding="15dp"
-        android:text="upload"
+        android:text="@string/upload"
         app:layout_constraintBottom_toBottomOf="parent"
 
 
@@ -64,9 +63,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:letterSpacing="0.5"
         android:padding="15dp"
-        android:text="cancel"
+        android:text="@string/cancel"
         app:layout_constraintBottom_toBottomOf="parent"
 
         app:layout_constraintEnd_toStartOf="@id/btnUploadVideo"

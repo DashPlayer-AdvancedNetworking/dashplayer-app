@@ -13,5 +13,9 @@
     <string name="exo_track_selection_title_audio">Audio</string>
     <string name="exo_track_selection_title_text">Text</string>
     <string name="StreamType">Stream type</string>
+    <string name="cancel">cancel</string>
+    <string name="upload">upload</string>
+    <string name="capture_and_upload">Capture and Upload</string>
+    <string name="watch_videos">Watch Videos</string>
 
 </resources>
