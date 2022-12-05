@@ -36,8 +36,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void uploadbtnPress(View view) {
-//        Intent intent = new Intent(this, UploadActivity.class);
-//        startActivity(intent);
         Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
         startActivityForResult(intent, VIDEO_RECORD_CODE);
 
@@ -74,6 +72,20 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == VIDEO_RECORD_CODE) {
             if (resultCode == RESULT_OK) {
                 //upload part
+                assert data != null;
+                videoUri = data.getData();
+
+                Log.i("MY_VIDEO_URI", videoUri.toString());
+
+                Intent intent = new Intent(this, UploadActivity.class);
+
+                intent.putExtra("VIDEO_URL", videoUri.toString());
+
+                startActivity(intent);
+
+                finish();
+
+                Log.i("RESULT_OK", "onActivityResult: Video captured");
 
 
 

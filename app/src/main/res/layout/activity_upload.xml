@@ -15,11 +15,14 @@
 
         android:autofillHints="My Video"
 
-        android:text="@string/video_title"
+        android:minHeight="48dp"
 
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="103dp"
-        tools:ignore="MissingConstraints" />
+        android:text="@string/video_title"
+        app:layout_constraintBottom_toTopOf="@+id/formVideoDescription"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.492"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="0dp" />
 
     <com.google.android.material.textfield.MaterialAutoCompleteTextView
         android:id="@+id/formVideoDescription"
@@ -29,11 +32,14 @@
         android:autofillHints="Custom recorded video"
 
 
-        android:text="@string/video_description"
+        android:minHeight="48dp"
 
-        tools:layout_editor_absoluteX="-14dp"
-        tools:layout_editor_absoluteY="195dp"
-        tools:ignore="MissingConstraints" />
+        android:text="@string/video_description"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.169"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="0dp" />
 
     <Button
         android:id="@+id/btnUploadVideo"
@@ -41,7 +47,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="304dp"
         android:letterSpacing="0.5"
         android:padding="15dp"
         android:text="upload"
@@ -52,14 +57,13 @@
 
         app:layout_constraintStart_toEndOf="@+id/btnCancelVideo"
 
-        />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/btnCancelVideo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginBottom="304dp"
         android:letterSpacing="0.5"
         android:padding="15dp"
         android:text="cancel"
@@ -67,7 +71,9 @@
 
         app:layout_constraintEnd_toStartOf="@id/btnUploadVideo"
 
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.501" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
