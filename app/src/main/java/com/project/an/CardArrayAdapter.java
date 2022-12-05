@@ -1,10 +1,6 @@
 package com.project.an;
 
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,9 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CardArrayAdapter  extends ArrayAdapter<Card> {
-    private static final String TAG = "CardArrayAdapter";
+
     private List<Card> cardList = new ArrayList<Card>();
-    private static final ArrayList<Card> videoCardModels = new ArrayList<>();
+    // Watch Video activity that contains this adapter
     private WatchVideosActivity wva;
 
     static class CardViewHolder {
@@ -46,6 +42,7 @@ public class CardArrayAdapter  extends ArrayAdapter<Card> {
         return this.cardList.get(index);
     }
 
+    // Setting up video card list view
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View row = convertView;
@@ -64,17 +61,9 @@ public class CardArrayAdapter  extends ArrayAdapter<Card> {
         viewHolder.line1.setText(card.getTitle());
         viewHolder.line2.setText(card.getDescription());
         row.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        wva.onCardClick(position);
-                    }
-                }
+                view -> wva.onCardClick(position)
         );
         return row;
     }
 
-    public Bitmap decodeToBitmap(byte[] decodedByte) {
-        return BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length);
-    }
 }

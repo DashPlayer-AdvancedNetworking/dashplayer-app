@@ -4,16 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.ActivityManager;
-import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -22,35 +16,18 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
-
-import com.google.android.exoplayer2.ExoPlayer;
-import com.google.android.exoplayer2.MediaItem;
-import com.google.android.exoplayer2.ui.StyledPlayerView;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
-
-import java.io.DataOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
-
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -62,7 +39,6 @@ import retrofit2.Response;
 
 public class UploadActivity extends AppCompatActivity {
 
-    private ExoPlayer player;
     private Button btnUpload;
     private Button btnCancel;
     private MaterialAutoCompleteTextView formVideoTitle;
@@ -75,26 +51,24 @@ public class UploadActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload);
 
-        //===========================================================
-
-        // Form id init
+        //set up upload and cancel buttons
         btnUpload = findViewById(R.id.btnUploadVideo);
         btnCancel = findViewById(R.id.btnCancelVideo);
 
-
-        mediaFolder = createFolder(this);
-        Log.i("FOLDER", mediaFolder);
-
+        //redirect to main page if cancel button is pressed
         btnCancel.setOnClickListener(
                 view -> {
-
                     Intent intent = new Intent(this, MainActivity.class);
-//                    player.stop();
                     startActivity(intent);
                     finish();
                 }
         );
 
+        //save in android/media/com.project.<app name>
+        mediaFolder = createFolder(this);
+        Log.i("FOLDER", mediaFolder);
+
+        //get title and description for captured video
         formVideoTitle = findViewById(R.id.formVideoTitle);
         formVideoDescription = findViewById(R.id.formVideoDescription);
 
@@ -103,29 +77,13 @@ public class UploadActivity extends AppCompatActivity {
 
         String videoRecordTime = getIntent().getStringExtra("VIDEO_RECORD_TIME");
 
-//        StyledPlayerView playerView = findViewById(R.id.video_player_view_upload_form);
-//        playerView.setControllerShowTimeoutMs(3000);
-
-//        player = new ExoPlayer.Builder(this).build();
-
-//        playerView.setPlayer(player);
-
-//        MediaItem mediaItem = new MediaItem.Builder().setUri(videoUri).build();
-
-//        player.setMediaItem(mediaItem);
-
-//        player.prepare();
-
-//        player.setPlayWhenReady(true);
-
+        //send to server if upload button is pressed. then redirect to main page
         btnUpload.setOnClickListener(
                 view -> {
-
                     verifyStoragePermissions(this);
-                    Log.i("ASDASDASD", "Headers are written 1");
+                    Log.i("STORAGE_PERMISSION", "Got permission to store");
                     UploadVideoFile uploadVideoFile = new UploadVideoFile();
                     uploadVideoFile.execute();
-
                     storeMedia(Uri.parse(videoUri));
 
                     Intent intent = new Intent(this, MainActivity.class);
@@ -155,7 +113,7 @@ public class UploadActivity extends AppCompatActivity {
         return null;
     }
 
-    //==========================================
+    //save video in local storage
     private void storeMedia(Uri videoUri) {
         String saveFolder = mediaFolder + "/Video.mp4";
 
@@ -247,11 +205,6 @@ public class UploadActivity extends AppCompatActivity {
             Log.i("MY_VIDEO_PATH", videoUri);
 
             File video_source = new File(videoUri);
-            String iFileName = videoUri;
-            String lineEnd = "\r\n";
-            String twoHyphens = "--";
-            String boundary = "*****";
-            String Tag = "fSnd";
 
             Map<String, RequestBody> map = new HashMap<>();
             map.put("title", RequestBody.create(MediaType.parse("text/plain"), formVideoTitle.getText().toString()));
@@ -261,39 +214,28 @@ public class UploadActivity extends AppCompatActivity {
 
             try {
                 RequestBody reqBody = RequestBody.create(MediaType.parse("multipart/form-file"), video_source);
-                Log.i(Tag, "Request body created");
                 MultipartBody.Part partImage = MultipartBody.Part.createFormData("video", video_source.getName(), reqBody);
-//                MultipartBody.Part partTitle = MultipartBody.Part.createFormData("title", formVideoTitle.getText().toString(), reqBody);
-//                MultipartBody.Part partDesc = MultipartBody.Part.createFormData("description", formVideoDescription.getText().toString(), reqBody);
-                Log.i(Tag, "Multipart created");
                 API api = RetrofitClient.getInstance().getAPI();
-                Log.i(Tag, "API created");
-                Call<ResponseBody> upload = api.uploadVideo(partImage, map);
-                Log.i(Tag, "upload response body created");
+                Call<ResponseBody> upload = api.uploadVideo(partImage, map);;
                 upload.enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                         if (response.isSuccessful()) {
-                            Log.i(Tag, "Mission successful");
-
                             Toast.makeText(getApplicationContext(), "Upload Complete", Toast.LENGTH_LONG).show();
-
                         } else {
-                            Log.e(Tag, "Response unsuccessful at line 167");
-                            Log.e(Tag, response.message());
+                            Log.e("error", response.message());
                         }
                     }
 
                     @Override
                     public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
-                        Log.e(Tag, "Mission failed");
-                        Log.e(Tag, t.getMessage());
+                        Log.e("error", t.getMessage());
                         Toast.makeText(getApplicationContext(), "Upload Failed", Toast.LENGTH_LONG).show();
                     }
                 });
 
             } catch (Exception e) {
-                Log.e(Tag, "URL error: " + e.getMessage(), e);
+                Log.e("error", "URL error: " + e.getMessage(), e);
             }
 
             return null;

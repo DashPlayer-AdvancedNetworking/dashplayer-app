@@ -1,5 +1,6 @@
 package com.project.an;
 
+// Video card model
 public class Card {
     private String title;
     private String description;

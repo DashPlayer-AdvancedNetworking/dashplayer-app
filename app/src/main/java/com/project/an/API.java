@@ -12,16 +12,16 @@ import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.PartMap;
-import retrofit2.http.Path;
-import retrofit2.http.Streaming;
+
 
 public interface API {
 
-
+    // HTTP GET request for getting videos
     @GET("getVideos")
     Call<List<Video>> getVideos();
 
-    @Multipart                                                                                          // POST request to upload an image from storage
+    // HTTP POST request to upload image in a multipart body request
+    @Multipart
     @POST("upload")
     Call<ResponseBody> uploadVideo(@Part MultipartBody.Part video, @PartMap Map<String, RequestBody> requestBody);
 }
